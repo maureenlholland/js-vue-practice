@@ -1,7 +1,9 @@
 <template>
     <div class="col-xs-12 col-sm-6">
-    	<p v-if="detail">Server #{{ id }} Status: {{ detail }}</p>
+    	<p v-if="server">Server #{{ server.id }} Status: {{ server.status }}</p>
         <p v-else>Click a server to see its status</p>
+        <hr>
+        <button @click="resetStatus">Change status</button>
     </div>
 
 </template>
@@ -11,14 +13,17 @@
 	export default {
 		data: function(){
 			return {
-				detail: '',
-				id: null
+				server: null
+			}
+		},
+		methods: {
+			resetStatus(){
+				this.server.status = 'Normal'
 			}
 		},
 		created() {
 			serverStatus.$on('showStatus', (data) => {
-				this.detail = data.status;
-				this.id = data.id;
+				this.server = data;
 			})
 		}
 	}
